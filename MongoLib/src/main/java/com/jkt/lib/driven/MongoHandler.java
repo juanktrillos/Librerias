@@ -101,4 +101,18 @@ public class MongoHandler {
         }
         return r;
     }
+    
+    
+    public void remove(Class<? extends BasicDBObject> clase, String atribute, Object data) {
+        LinkedList<BasicDBObject> r = new LinkedList<>();
+        BasicDBObject query = new BasicDBObject(atribute, data);
+        if (atribute.equals("_id")) {
+            query = new BasicDBObject();
+            String value = (String) data;
+            query.put("_id", new ObjectId(value));
+        }
+        DBCollection collection = db.getCollection(clase.getSimpleName());
+        collection.setObjectClass(clase);
+        collection.remove(query);
+    }
 }
